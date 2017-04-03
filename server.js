@@ -28,8 +28,6 @@ app.get('/todos/:id', function (req, res) {
     } else {
         res.status(404).send();
     }
-
-    //res.send('Asking for todo with id of ' + req.params.id);
 });
 
 // POST /todos
@@ -45,6 +43,18 @@ app.post('/todos', function (req, res) {
     todos.push(body);
 
     res.json(body);
+});
+
+// DELETE /todos/:id
+app.delete('/todos/:id', function (req, res) {
+    var todoToRemove = _.findWhere(todos, {id: parseInt(req.params.id, 10)});
+
+    if (todoToRemove) {
+        todos = _.without(todos, todoToRemove);
+        res.json(todoToRemove);
+    } else {
+        res.status(404).send();
+    }
 });
 
 app.listen(PORT, function () {
